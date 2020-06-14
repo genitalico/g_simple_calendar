@@ -1,8 +1,8 @@
 name: g_simple_calendar
 description: Simple calendar widget.
 version: 0.0.1
-author:
-homepage:
+author: Galileo Teco
+homepage: https://80bits.com
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
