@@ -3,3 +3,37 @@
 Simple Calendar Widget 
 
 ## Getting Started
+
+For help getting started with Flutter, view our online [documentation](https://flutter.io/).
+
+## Props
+
+| props           | types               | defaultValues                                                |
+| --------------- | ------------------- | ------------------------------------------------------------ |
+| date            | DateTime            |                                                              |
+| selectedColor   | Color               | Colors.grey                                                  |
+| celdTextColor   | Color               | Colors.black                                                 |
+| titleStyle      | TextStyle           | TextStyle(color: widget.celdTextColor ?? Colors.black, fontSize: 18) |
+| celTextEmpty    | String              | X                                                            |
+| onRangeSelected | Function(List<int>) |                                                              |
+
+## Install
+
+Add `g_simple_calendar` as a dependency in pubspec.yaml For help on adding as a dependency, view the [documentation](https://flutter.io/using-packages/).
+
+## Usage
+
+```dart
+Widget build(BuildContext context) {
+    
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: GSimpleCalendar(
+        date: DateTime.now(),
+      ),
+    );
+  }
+```
+
