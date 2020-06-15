@@ -15,7 +15,7 @@ For help getting started with Flutter, view our online [documentation](https://f
 | celdTextColor   | Color               | Colors.black                                                 |
 | titleStyle      | TextStyle           | TextStyle(color: widget.celdTextColor ?? Colors.black, fontSize: 18) |
 | celTextEmpty    | String              | X                                                            |
-| onRangeSelected | Function(List<int>) |                                                              |
+| onRangeSelected | Function(List<int>) | null, get data selected days                                 |
 
 ## Install
 
@@ -36,4 +36,10 @@ Widget build(BuildContext context) {
     );
   }
 ```
+
+## About me
+
+[80bits.com](https://80bits.com)
+
+[80bits.blog](https://80bits.blog)
 
