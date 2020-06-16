@@ -10,6 +10,7 @@ class GSimpleCalendar extends StatefulWidget {
   final TextStyle titleStyle;
   final String celTextEmpty;
   final Function(List<int>) onRangeSelected;
+  final bool visibleTitle;
   const GSimpleCalendar(
       {Key key,
       @required this.date,
@@ -17,7 +18,8 @@ class GSimpleCalendar extends StatefulWidget {
       this.celdTextColor,
       this.titleStyle,
       this.celTextEmpty,
-      this.onRangeSelected})
+      this.onRangeSelected,
+      this.visibleTitle: false})
       : super(key: key);
 
   @override
@@ -108,30 +110,34 @@ class _CalendarViewState extends State<GSimpleCalendar> {
     TextStyle _titleStyle = widget.titleStyle ??
         TextStyle(color: widget.celdTextColor ?? Colors.black, fontSize: 18);
 
+    var listToColum = List<Widget>();
+
+    if (widget.visibleTitle) {
+      listToColum.add(Align(
+        alignment: Alignment.center,
+        child: Text(
+          _title,
+          style: _titleStyle,
+          textDirection: TextDirection.ltr,
+          textAlign: TextAlign.center,
+        ),
+      ));
+    }
+
+    listToColum.add(SizedBox(
+      height: 25,
+    ));
+
+    listToColum.add(rows[0]);
+    listToColum.add(rows[1]);
+    listToColum.add(rows[2]);
+    listToColum.add(rows[3]);
+    listToColum.add(rows[4]);
+    listToColum.add(rows[5]);
+
     return Container(
       margin: EdgeInsets.all(10),
-      child: Column(
-        children: <Widget>[
-          Align(
-            alignment: Alignment.center,
-            child: Text(
-              _title,
-              style: _titleStyle,
-              textDirection: TextDirection.ltr,
-              textAlign: TextAlign.center,
-            ),
-          ),
-          SizedBox(
-            height: 25,
-          ),
-          rows[0],
-          rows[1],
-          rows[2],
-          rows[3],
-          rows[4],
-          rows[5]
-        ],
-      ),
+      child: Column(children: listToColum),
     );
   }
 
@@ -209,18 +215,21 @@ class _CalendarViewState extends State<GSimpleCalendar> {
       _fillColor = fillColor;
 
     return Expanded(
-      child: Directionality(
-        textDirection: TextDirection.ltr,
-        child: FlatButton(
+        child: Directionality(
+      textDirection: TextDirection.ltr,
+      child: FlatButton(
         color: _fillColor,
         textColor: _colorText,
         onPressed: () {
           _onPressedceld(value);
         },
-        child: Text(_text,textDirection: TextDirection.ltr,textAlign: TextAlign.center,),
+        child: Text(
+          _text,
+          textDirection: TextDirection.ltr,
+          textAlign: TextAlign.center,
+        ),
       ),
-      )
-    );
+    ));
   }
 
   @override
