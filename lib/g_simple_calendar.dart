@@ -147,6 +147,9 @@ class _CalendarViewState extends State<GSimpleCalendar> {
     if (_countClick == 1) {
       _sInit = value;
       _selectedRange.add(_sInit);
+
+      if (this.widget.onRangeSelected != null)
+        this.widget.onRangeSelected(_selectedRange);
     }
 
     if (_countClick == 2) {
