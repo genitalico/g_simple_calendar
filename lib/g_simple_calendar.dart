@@ -11,6 +11,8 @@ class GSimpleCalendar extends StatefulWidget {
   final String celTextEmpty;
   final Function(List<int>) onRangeSelected;
   final bool visibleTitle;
+  final List<int> blockedDays;
+  final Color colorBlockedDays;
   const GSimpleCalendar(
       {Key key,
       @required this.date,
@@ -19,7 +21,9 @@ class GSimpleCalendar extends StatefulWidget {
       this.titleStyle,
       this.celTextEmpty,
       this.onRangeSelected,
-      this.visibleTitle: false})
+      this.visibleTitle: false,
+      this.blockedDays,
+      this.colorBlockedDays})
       : super(key: key);
 
   @override
@@ -70,16 +74,21 @@ class _CalendarViewState extends State<GSimpleCalendar> {
       var text = i.toString();
 
       Color _selectedColorTemp;
+      bool blocked = false;
       var r = _selectedRange.where((x) => x == i);
 
       if (r.length > 0) _selectedColorTemp = _selectedColor;
+      if (widget.blockedDays != null) {
+        var bl = widget.blockedDays.where((x) => x == i);
+        if (bl.length > 0) {
+          blocked = true;
+          if (widget.colorBlockedDays != null)
+            _selectedColorTemp = widget.colorBlockedDays;
+        }
+      }
 
       celd = _celdButton(
-        i,
-        text,
-        widget.celdTextColor,
-        _selectedColorTemp,
-      );
+          i, text, widget.celdTextColor, _selectedColorTemp, blocked);
 
       _celds.add(celd);
     }
@@ -191,14 +200,15 @@ class _CalendarViewState extends State<GSimpleCalendar> {
     String _text = widget.celTextEmpty ?? 'X';
     var list = List<Widget>();
     for (int i = 1; i < count; i++) {
-      var celd = _celdButton(0, _text, widget.celdTextColor, null);
+      var celd = _celdButton(0, _text, widget.celdTextColor, null, true);
       list.add(celd);
     }
 
     return list;
   }
 
-  Widget _celdButton(int value, String text, Color colorText, Color fillColor) {
+  Widget _celdButton(int value, String text, Color colorText, Color fillColor,
+      bool isBlocked) {
     String _text = text;
     if (_text.isEmpty) _text = 'X';
     if (_text == null) {
@@ -216,6 +226,23 @@ class _CalendarViewState extends State<GSimpleCalendar> {
       _fillColor = Colors.transparent;
     else
       _fillColor = fillColor;
+
+    if (isBlocked) {
+      return Expanded(
+          child: Directionality(
+        textDirection: TextDirection.ltr,
+        child: FlatButton(
+          color: _fillColor,
+          textColor: _colorText,
+          onPressed: () {},
+          child: Text(
+            _text,
+            textDirection: TextDirection.ltr,
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ));
+    }
 
     return Expanded(
         child: Directionality(
