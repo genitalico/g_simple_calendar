@@ -8,14 +8,15 @@ For help getting started with Flutter, view our online [documentation](https://f
 
 ## Props
 
-| props           | types               | defaultValues                                                |
-| --------------- | ------------------- | ------------------------------------------------------------ |
-| date            | DateTime            |                                                              |
-| selectedColor   | Color               | Colors.grey                                                  |
-| celdTextColor   | Color               | Colors.black                                                 |
-| titleStyle      | TextStyle           | TextStyle(color: widget.celdTextColor ?? Colors.black, fontSize: 18) |
-| celTextEmpty    | String              | X                                                            |
-| onRangeSelected | Function(List<int>) | null, get data selected days                                 |
+| props           | types               | defaultValues                                |
+| --------------- | ------------------- | -------------------------------------------- |
+| date            | DateTime            |                                              |
+| selectedColor   | Color               | Colors.grey                                  |
+| celdTextColor   | Color               | Colors.black                                 |
+| titleStyle      | TextStyle           | TextStyle(color: Colors.black, fontSize: 18) |
+| celTextEmpty    | String              | X                                            |
+| onRangeSelected | Function(List<int>) | null, get data selected days                 |
+| visibleTitle    | bool                | false                                        |
 
 ## Install
 
