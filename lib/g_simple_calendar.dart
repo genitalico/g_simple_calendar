@@ -255,6 +255,7 @@ class _CalendarViewState extends State<GSimpleCalendar> {
         },
         child: Text(
           _text,
+          softWrap: false,
           textDirection: TextDirection.ltr,
           textAlign: TextAlign.center,
         ),
