@@ -38,7 +38,7 @@ class _CalendarViewState extends State<GSimpleCalendar> {
   int _sInit = 0;
   int _countClick = 0;
   List<int> _selectedRange;
-  final int _celdsLength = 42;
+  final int _celdsLength = 48;
   Color _selectedColor;
   @override
   void initState() {
@@ -100,7 +100,7 @@ class _CalendarViewState extends State<GSimpleCalendar> {
       _celds.add(celd);
     }
 
-    int diffDays = _celdsLength + 1 - (totalDays + weekday + 7);
+    int diffDays = _celdsLength + 1 - (totalDays + weekday );
     _celds.addAll(_getEmptyList(diffDays));
 
     var rows = List<Row>();
@@ -151,6 +151,7 @@ class _CalendarViewState extends State<GSimpleCalendar> {
     listToColum.add(rows[3]);
     listToColum.add(rows[4]);
     listToColum.add(rows[5]);
+    listToColum.add(rows[6]);
 
     return Container(
       margin: EdgeInsets.all(10),
