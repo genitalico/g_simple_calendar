@@ -38,7 +38,7 @@ class _CalendarViewState extends State<GSimpleCalendar> {
   int _sInit = 0;
   int _countClick = 0;
   List<int> _selectedRange;
-  final int _celdsLength = 48;
+  final int _celdsLength = 49;
   Color _selectedColor;
   @override
   void initState() {
@@ -63,6 +63,7 @@ class _CalendarViewState extends State<GSimpleCalendar> {
     var initDate = DateTime(year, month, 1);
     var totalDays = lastDayOfMonth(initDate).day;
     var weekday = initDate.weekday;
+    print(totalDays);
 
     _celds = List<Widget>();
 
