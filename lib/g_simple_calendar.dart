@@ -50,11 +50,18 @@ class _CalendarViewState extends State<GSimpleCalendar> {
     _body = _buildDesign();
   }
 
+  DateTime lastDayOfMonth(DateTime month) {
+  var beginningNextMonth = (month.month < 12)
+      ? new DateTime(month.year, month.month + 1, 1)
+      : new DateTime(month.year + 1, 1, 1);
+  return beginningNextMonth.subtract(new Duration(days: 1));
+}
+
   Widget _buildDesign() {
     int year = widget.date.year;
     int month = widget.date.month;
     var initDate = DateTime(year, month, 1);
-    var totalDays = DateTime(year, month + 1, 1).difference(initDate).inDays;
+    var totalDays = lastDayOfMonth(initDate).day;
     var weekday = initDate.weekday;
 
     _celds = List<Widget>();
@@ -93,11 +100,12 @@ class _CalendarViewState extends State<GSimpleCalendar> {
       _celds.add(celd);
     }
 
-    _celds.addAll(_getEmptyList(_celdsLength));
+    int diffDays = _celdsLength + 1 - (totalDays + weekday + 7);
+    _celds.addAll(_getEmptyList(diffDays));
 
     var rows = List<Row>();
 
-    for (int i = 0; i < _celds.length; i = i + 7) {
+    for (int i = 0; i < _celdsLength; i = i + 7) {
       var split = _celds.skip(i).take(7).toList();
       var row = Row(
         textDirection: TextDirection.ltr,
