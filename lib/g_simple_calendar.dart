@@ -241,6 +241,7 @@ class _CalendarViewState extends State<GSimpleCalendar> {
           child: Directionality(
         textDirection: TextDirection.ltr,
         child: FlatButton(
+          padding: EdgeInsets.all(0),
           color: _fillColor,
           textColor: _colorText,
           onPressed: () {},
@@ -257,6 +258,7 @@ class _CalendarViewState extends State<GSimpleCalendar> {
         child: Directionality(
       textDirection: TextDirection.ltr,
       child: FlatButton(
+        padding: EdgeInsets.all(0),
         color: _fillColor,
         textColor: _colorText,
         onPressed: () {
