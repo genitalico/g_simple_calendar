@@ -10,6 +10,9 @@ class GSimpleCalendar extends StatefulWidget {
   final TextStyle titleStyle;
   final String celTextEmpty;
   final Function(List<int>) onRangeSelected;
+  final bool visibleTitle;
+  final List<int> blockedDays;
+  final Color colorBlockedDays;
   const GSimpleCalendar(
       {Key key,
       @required this.date,
@@ -17,7 +20,10 @@ class GSimpleCalendar extends StatefulWidget {
       this.celdTextColor,
       this.titleStyle,
       this.celTextEmpty,
-      this.onRangeSelected})
+      this.onRangeSelected,
+      this.visibleTitle: false,
+      this.blockedDays,
+      this.colorBlockedDays})
       : super(key: key);
 
   @override
@@ -32,7 +38,7 @@ class _CalendarViewState extends State<GSimpleCalendar> {
   int _sInit = 0;
   int _countClick = 0;
   List<int> _selectedRange;
-  final int _celdsLength = 42;
+  final int _celdsLength = 49;
   Color _selectedColor;
   @override
   void initState() {
@@ -44,12 +50,20 @@ class _CalendarViewState extends State<GSimpleCalendar> {
     _body = _buildDesign();
   }
 
+  DateTime lastDayOfMonth(DateTime month) {
+    var beginningNextMonth = (month.month < 12)
+        ? new DateTime(month.year, month.month + 1, 1)
+        : new DateTime(month.year + 1, 1, 1);
+    return beginningNextMonth.subtract(new Duration(days: 1));
+  }
+
   Widget _buildDesign() {
     int year = widget.date.year;
     int month = widget.date.month;
     var initDate = DateTime(year, month, 1);
-    var totalDays = DateTime(year, month + 1, 1).difference(initDate).inDays;
+    var totalDays = lastDayOfMonth(initDate).day;
     var weekday = initDate.weekday;
+    print(totalDays);
 
     _celds = List<Widget>();
 
@@ -68,25 +82,33 @@ class _CalendarViewState extends State<GSimpleCalendar> {
       var text = i.toString();
 
       Color _selectedColorTemp;
+      bool blocked = false;
       var r = _selectedRange.where((x) => x == i);
 
       if (r.length > 0) _selectedColorTemp = _selectedColor;
+      if (widget.blockedDays != null) {
+        var bl = widget.blockedDays.where((x) => x == i);
+        if (bl.length > 0) {
+          blocked = true;
+          if (widget.colorBlockedDays != null)
+            _selectedColorTemp = widget.colorBlockedDays;
+          else
+            _selectedColorTemp = Colors.grey;
+        }
+      }
 
       celd = _celdButton(
-        i,
-        text,
-        widget.celdTextColor,
-        _selectedColorTemp,
-      );
+          i, text, widget.celdTextColor, _selectedColorTemp, blocked);
 
       _celds.add(celd);
     }
 
-    _celds.addAll(_getEmptyList(_celdsLength));
+    int diffDays = _celdsLength + 1 - (totalDays + weekday);
+    _celds.addAll(_getEmptyList(diffDays));
 
     var rows = List<Row>();
 
-    for (int i = 0; i < _celds.length; i = i + 7) {
+    for (int i = 0; i < _celdsLength; i = i + 7) {
       var split = _celds.skip(i).take(7).toList();
       var row = Row(
         textDirection: TextDirection.ltr,
@@ -108,30 +130,35 @@ class _CalendarViewState extends State<GSimpleCalendar> {
     TextStyle _titleStyle = widget.titleStyle ??
         TextStyle(color: widget.celdTextColor ?? Colors.black, fontSize: 18);
 
+    var listToColum = List<Widget>();
+
+    if (widget.visibleTitle) {
+      listToColum.add(Align(
+        alignment: Alignment.center,
+        child: Text(
+          _title,
+          style: _titleStyle,
+          textDirection: TextDirection.ltr,
+          textAlign: TextAlign.center,
+        ),
+      ));
+    }
+
+    listToColum.add(SizedBox(
+      height: 25,
+    ));
+
+    listToColum.add(rows[0]);
+    listToColum.add(rows[1]);
+    listToColum.add(rows[2]);
+    listToColum.add(rows[3]);
+    listToColum.add(rows[4]);
+    listToColum.add(rows[5]);
+    listToColum.add(rows[6]);
+
     return Container(
       margin: EdgeInsets.all(10),
-      child: Column(
-        children: <Widget>[
-          Align(
-            alignment: Alignment.center,
-            child: Text(
-              _title,
-              style: _titleStyle,
-              textDirection: TextDirection.ltr,
-              textAlign: TextAlign.center,
-            ),
-          ),
-          SizedBox(
-            height: 25,
-          ),
-          rows[0],
-          rows[1],
-          rows[2],
-          rows[3],
-          rows[4],
-          rows[5]
-        ],
-      ),
+      child: Column(children: listToColum),
     );
   }
 
@@ -141,6 +168,9 @@ class _CalendarViewState extends State<GSimpleCalendar> {
     if (_countClick == 1) {
       _sInit = value;
       _selectedRange.add(_sInit);
+
+      if (this.widget.onRangeSelected != null)
+        this.widget.onRangeSelected(_selectedRange);
     }
 
     if (_countClick == 2) {
@@ -182,14 +212,15 @@ class _CalendarViewState extends State<GSimpleCalendar> {
     String _text = widget.celTextEmpty ?? 'X';
     var list = List<Widget>();
     for (int i = 1; i < count; i++) {
-      var celd = _celdButton(0, _text, widget.celdTextColor, null);
+      var celd = _celdButton(0, _text, widget.celdTextColor, null, true);
       list.add(celd);
     }
 
     return list;
   }
 
-  Widget _celdButton(int value, String text, Color colorText, Color fillColor) {
+  Widget _celdButton(int value, String text, Color colorText, Color fillColor,
+      bool isBlocked) {
     String _text = text;
     if (_text.isEmpty) _text = 'X';
     if (_text == null) {
@@ -208,19 +239,42 @@ class _CalendarViewState extends State<GSimpleCalendar> {
     else
       _fillColor = fillColor;
 
-    return Expanded(
-      child: Directionality(
+    if (isBlocked) {
+      return Expanded(
+          child: Directionality(
         textDirection: TextDirection.ltr,
         child: FlatButton(
+          padding: EdgeInsets.all(0),
+          color: _fillColor,
+          textColor: _colorText,
+          onPressed: () {},
+          child: Text(
+            _text,
+            textDirection: TextDirection.ltr,
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ));
+    }
+
+    return Expanded(
+        child: Directionality(
+      textDirection: TextDirection.ltr,
+      child: FlatButton(
+        padding: EdgeInsets.all(0),
         color: _fillColor,
         textColor: _colorText,
         onPressed: () {
           _onPressedceld(value);
         },
-        child: Text(_text,textDirection: TextDirection.ltr,textAlign: TextAlign.center,),
+        child: Text(
+          _text,
+          softWrap: false,
+          textDirection: TextDirection.ltr,
+          textAlign: TextAlign.center,
+        ),
       ),
-      )
-    );
+    ));
   }
 
   @override
