@@ -51,11 +51,11 @@ class _CalendarViewState extends State<GSimpleCalendar> {
   }
 
   DateTime lastDayOfMonth(DateTime month) {
-  var beginningNextMonth = (month.month < 12)
-      ? new DateTime(month.year, month.month + 1, 1)
-      : new DateTime(month.year + 1, 1, 1);
-  return beginningNextMonth.subtract(new Duration(days: 1));
-}
+    var beginningNextMonth = (month.month < 12)
+        ? new DateTime(month.year, month.month + 1, 1)
+        : new DateTime(month.year + 1, 1, 1);
+    return beginningNextMonth.subtract(new Duration(days: 1));
+  }
 
   Widget _buildDesign() {
     int year = widget.date.year;
@@ -92,6 +92,8 @@ class _CalendarViewState extends State<GSimpleCalendar> {
           blocked = true;
           if (widget.colorBlockedDays != null)
             _selectedColorTemp = widget.colorBlockedDays;
+          else
+            _selectedColorTemp = Colors.grey;
         }
       }
 
@@ -101,7 +103,7 @@ class _CalendarViewState extends State<GSimpleCalendar> {
       _celds.add(celd);
     }
 
-    int diffDays = _celdsLength + 1 - (totalDays + weekday );
+    int diffDays = _celdsLength + 1 - (totalDays + weekday);
     _celds.addAll(_getEmptyList(diffDays));
 
     var rows = List<Row>();
