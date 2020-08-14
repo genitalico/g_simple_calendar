@@ -40,6 +40,14 @@ Widget build(BuildContext context) {
   }
 ```
 
+## ScreenShots
+
+![Vista Previa](https://80bits.blog/wp-content/uploads/2020/06/calendar_flutter_cap1.png)
+
+![Vista animada](https://80bits.blog/wp-content/uploads/2020/06/simple_calendar_anin1.gif)
+
+
+
 ## About me
 
 [80bits.com](https://80bits.com)
