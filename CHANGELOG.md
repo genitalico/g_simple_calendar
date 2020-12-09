@@ -1,4 +1,9 @@
+## [0.0.3+2] - TODO: Add release date.
+
+* Fix bug
+
 ## [0.0.3] - TODO: Add release date.
+
 * This version does'n compatible with version 0.0.2
 * Added new classes,GCellButton and GCustomButtonModel
 * Code improvements
