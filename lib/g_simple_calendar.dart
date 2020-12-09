@@ -209,7 +209,7 @@ class _CalendarViewState extends State<GSimpleCalendar> {
     for (int i = 1; i < count; i++) {
       var celd = GCellButton(
         enable: false,
-        label: '0',
+        label: '',
         number: 0,
         onPressed: (number) {},
       );
