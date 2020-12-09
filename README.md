@@ -8,17 +8,12 @@ For help getting started with Flutter, view our online [documentation](https://f
 
 ## Props
 
-| props            | types               | defaultValues                                |
-| ---------------- | ------------------- | -------------------------------------------- |
-| date             | DateTime            |                                              |
-| selectedColor    | Color               | Colors.grey                                  |
-| celdTextColor    | Color               | Colors.black                                 |
-| titleStyle       | TextStyle           | TextStyle(color: Colors.black, fontSize: 18) |
-| celTextEmpty     | String              | X                                            |
-| onRangeSelected  | Function(List<int>) | null, get data selected days                 |
-| visibleTitle     | bool                | false                                        |
-| blockedDays      | List<int>           | null                                         |
-| colorBlockedDays | Color               | Colors.grey                                  |
+| props           | types                    | defaultValues                |
+| --------------- | ------------------------ | ---------------------------- |
+| date            | DateTime                 |                              |
+| customButtons   | List<GCustomButtonModel> | length = 0                   |
+| onRangeSelected | Function(List<int>)      | null, get data selected days |
+| visibleTitle    | bool                     | false                        |
 
 ## Install
 
@@ -29,24 +24,32 @@ Add `g_simple_calendar` as a dependency in pubspec.yaml For help on adding as a 
 ```dart
 Widget build(BuildContext context) {
     
+    var custom = List<GCustomButtonModel>();
+
+    custom.add(GCustomButtonModel(
+      number: 12,
+      fillColor: Colors.yellow
+    ));
+
+    custom.add(GCustomButtonModel(
+      number: 22,
+      fillColor: Colors.blue,
+      enable: false
+    ));
+    
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
       body: GSimpleCalendar(
         date: DateTime.now(),
+        customButtons: custom
       ),
     );
   }
 ```
 
-## ScreenShots
-
-![Vista Previa](https://80bits.blog/wp-content/uploads/2020/06/calendar_flutter_cap1.png)
-
-![Vista animada](https://80bits.blog/wp-content/uploads/2020/06/simple_calendar_anin1.gif)
-
-
+<img src="screenshot1.png" alt="screenshot1" style="zoom:30%;" />
 
 ## About me
 
